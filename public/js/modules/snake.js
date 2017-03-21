@@ -14,7 +14,7 @@ var Snake = (function () {
 
 	var update = function () {
 		moveTick++;
-		var input;
+		var input = Controller.getArrowDirection({x: x * Board.getScale(), y: y * Board.getScale()});
 		if (!Ai.isEnabled()) {
 			if(input.length > 0) {
 				self[input[1]]();
@@ -56,13 +56,13 @@ var Snake = (function () {
 		});
 		
 		if(Board.getTile(x, y) === 'snake') {
-			length = 3;
+			length = 1;
 			// TODO: die
 		}
 		Board.setTile(x, y, 'snake');
 		xDirLast = xDir;
 		yDirLast = yDir;
-		if (snakePieces.length > length) {
+		while (snakePieces.length > length) {
 			var piece = snakePieces.pop();
 			Board.setTile(piece.x, piece.y, 'empty');
 		}
@@ -83,6 +83,19 @@ var Snake = (function () {
 				graphics.arc(baseX, baseY + 1, 6, 0, 2 * Math.PI);
 				graphics.arc(baseX + 1, baseY + 1, 6, 0, 2 * Math.PI);
 			}
+			
+			graphics.fill();
+			graphics.closePath();
+			
+			graphics.beginPath();
+			graphics.arc(
+				baseX + -piece.yDir * 5 + piece.xDir * 10, 
+				baseY + piece.yDir * 10 + -piece.xDir * 5, 3, 0, 2 * Math.PI
+			);
+			graphics.arc(
+				baseX + piece.yDir * 5 + piece.xDir * 10, 
+				baseY + piece.yDir * 10 + piece.xDir * 5, 3, 0, 2 * Math.PI
+			);
 			graphics.fill();
 			graphics.closePath();
 		}
