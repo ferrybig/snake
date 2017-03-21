@@ -1,4 +1,4 @@
-/* global Ai, Controller, Snake, Board, Score */
+/* global Ai, Controller, Snake, Board, Score, Food */
 
 'use strict';
 var Gameloop = (function() {
@@ -14,20 +14,22 @@ var Gameloop = (function() {
 	var _update = function() {
 		if(!paused) {
 			Ai.update();
-			Controller.update();
 			Snake.update();
+			Food.update();
 			Board.update();
 			Score.update();
+			Controller.update();
 		}
 	};
 	
 	var _draw = function() {
 		graphics.clearRect(0,0,800,800);
 		Ai.draw(graphics);
-		Controller.draw(graphics);
 		Snake.draw(graphics);
+		Food.draw(graphics);
 		Board.draw(graphics);
 		Score.draw(graphics);
+		Controller.draw(graphics);
 	};
 	
 	var _loop = function() {
@@ -50,6 +52,7 @@ var Gameloop = (function() {
 	var init = function(canvasElm) {
 		canvas = canvasElm;
 		graphics = canvas.getContext('2d');
+		Controller.init(canvasElm);
 		_requestAnimFrame(_loop);
 	};
 	

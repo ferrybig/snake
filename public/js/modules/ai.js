@@ -6,10 +6,14 @@ var Ai = (function(){
 	var draw = function() {
 		
 	};
+	var isEnabled = function() {
+		return false;
+	};
 	
 	var self = {
 		update: update,
-		draw: draw
+		draw: draw,
+		isEnabled: isEnabled
 	};
 	return self;
 })();

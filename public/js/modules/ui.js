@@ -1,5 +1,5 @@
 'use strict';
-var Ai = (function(){
+var Ui = (function(){
 	var update = function() {
 		
 	};
