@@ -58,6 +58,14 @@ var Board = (function(){
 	};
 	
 	var getTile = function(x, y) {
+		if(x >= grid.length)
+			x -= grid.length;
+		if(x < 0) 
+			x += grid.length;
+		if(y >= grid.length)
+			y -= grid.length;
+		if(y < 0) 
+			y += grid.length;
 		return grid[x][y];
 	};
 	var getScale = function() {

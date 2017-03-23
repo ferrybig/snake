@@ -20,9 +20,9 @@ var Snake = (function () {
 				self[input[1]]();
 				self[input[0]]();
 			}
-			if (moveTick < 12) {
-				return;
-			}
+		}
+		if (moveTick < 12) {
+			return;
 		}
 		moveTick = 0;
 		x += xDir;
@@ -134,6 +134,12 @@ var Snake = (function () {
 		xDir = 1;
 		yDir = 0;
 	};
+	var getX = function() {
+		return x;
+	};
+	var getY = function() {
+		return y;
+	};
 
 	var self = {
 		left: left,
@@ -143,7 +149,9 @@ var Snake = (function () {
 		update: update,
 		draw: draw,
 		getDirection: getDirection,
-		increaseLength: increaseLength
+		increaseLength: increaseLength,
+		getX: getX,
+		getY: getY
 	};
 	return self;
 })();
