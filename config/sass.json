@@ -1,0 +1,17 @@
+{
+	"tasks": {
+		"sass": {
+			"sass": {
+				"files": { 
+					"public/css/style.css": "src/sass/style.scss"
+				}
+			}
+		},
+		"watch": {
+			"sass": {
+				"files": ["src/sass/**/*.scss"],
+				"tasks": ["sass:sass"]
+			}
+		}
+	}
+}

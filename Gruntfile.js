@@ -1,10 +1,15 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+'use strict';
 module.exports = function (grunt) {
-	// Project configuration.
-	grunt.initConfig({
-	});
+	require('load-grunt-tasks')(grunt);
+ 
+    //loads the various task configuration files 
+    var configs = require('load-grunt-configs')(grunt);
+    grunt.initConfig(configs);
+ 
+ 
+ 
+    grunt.registerTask('javascript', ['concat_sourcemap:js', 'uglify:js']);
+    grunt.registerTask('styles', ['sass:sass']);
+    grunt.registerTask('build', ['javascript', 'sass']);
+    grunt.registerTask('default', ['build', 'watch']);
 };

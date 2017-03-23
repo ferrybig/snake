@@ -1,8 +1,25 @@
 {
-	"name": "snake",
-	"version": "1.0.0",
-	"keywords": ["util", "functional", "server", "client", "browser"],
-	"author": "fernando",
-	"contributors": [],
-	"dependencies": {}
+  "name": "snake",
+  "version": "1.0.0",
+  "keywords": [
+    "util",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
+  "author": "fernando",
+  "contributors": [],
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-concat-sourcemap": "^0.4.3",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "^2.2.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "load-grunt-config": "^0.19.2",
+    "load-grunt-configs": "^1.0.0",
+    "load-grunt-tasks": "^3.5.2"
+  }
 }

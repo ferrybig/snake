@@ -1,4 +1,4 @@
-/* global Gameloop */
+/* global Gameloop, Board */
 
 'use strict';
 (function () {
