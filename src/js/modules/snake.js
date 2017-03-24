@@ -65,7 +65,7 @@ var Snake = (function () {
 		}
 		var piece = snakePieces.pop();
 		piece.xDirLast = 0;
-		piece.yDIrLast = 0;
+		piece.yDirLast = 0;
 		snakePieces.push(piece);
 	};
 	var draw = function (graphics) {
