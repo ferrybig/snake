@@ -1,4 +1,4 @@
-/* global Board, Controller, Ai */
+/* global Board, Controller, Ai, Gameloop */
 
 'use strict';
 var Snake = (function () {
@@ -10,10 +10,8 @@ var Snake = (function () {
 	var yDir = 0;
 	var xDirLast = 0;
 	var yDirLast = 0;
-	var moveTick = 0;
 
 	var update = function () {
-		moveTick++;
 		var input = Controller.getArrowDirection({x: x * Board.getScale(), y: y * Board.getScale()});
 		if (!Ai.isEnabled()) {
 			if(input.length > 0) {
@@ -21,10 +19,6 @@ var Snake = (function () {
 				self[input[0]]();
 			}
 		}
-		if (moveTick < 12) {
-			return;
-		}
-		moveTick = 0;
 		x += xDir;
 		y += yDir;
 		if (x < 0) {
@@ -51,13 +45,16 @@ var Snake = (function () {
 			y: y,
 			xDir: 0,
 			yDir: 0,
-			xDirLast: xDirLast,
-			yDirLast: yDirLast
+			xDirLast: xDir,
+			yDirLast: yDir
 		});
 		
 		if(Board.getTile(x, y) === 'snake') {
-			length = 1;
+			//length = 1;
+			length -= 3;
 			// TODO: die
+			//Gameloop.pause();
+			//return;
 		}
 		Board.setTile(x, y, 'snake');
 		xDirLast = xDir;
@@ -66,38 +63,79 @@ var Snake = (function () {
 			var piece = snakePieces.pop();
 			Board.setTile(piece.x, piece.y, 'empty');
 		}
+		var piece = snakePieces.pop();
+		piece.xDirLast = 0;
+		piece.yDIrLast = 0;
+		snakePieces.push(piece);
 	};
 	var draw = function (graphics) {
 		for (var i = 0; i < snakePieces.length; i++) {
 			var piece = snakePieces[i];
-
-			graphics.fillStyle = "yellow";
+			if(i === 0) {
+				graphics.fillStyle = "#99FF99";
+			} else {
+				graphics.fillStyle = "yellow";
+			}
 			graphics.fillRect(piece.x * Board.getScale(), piece.y * Board.getScale(), Board.getScale(), Board.getScale());
-			graphics.fillStyle = "gray";
-			graphics.beginPath();
-			var baseX = piece.x * Board.getScale() + Board.getScale() / 2;
-			var baseY = piece.y * Board.getScale() + Board.getScale() / 2;
+			var baseX = piece.x * Board.getScale() + Board.getScale() / 2 + 1;
+			var baseY = piece.y * Board.getScale() + Board.getScale() / 2 + 1;
+			var size = Math.sin((i) / 10) / 2 + 4;
+			var sizeNext = Math.sin((i + 1)/ 10) / 2 + 4;
+			if(piece.xDir === piece.xDirLast && piece.yDir === piece.yDirLast) {
+				graphics.beginPath();
+				graphics.moveTo(
+					baseX + -piece.yDir * size + piece.xDir * 10, 
+					baseY + piece.yDir * 10 + -piece.xDir * size
+				);
+				graphics.lineTo(
+					baseX + -piece.yDirLast * sizeNext + -piece.xDirLast * 10, 
+					baseY + -piece.yDirLast * 10 + -piece.xDirLast * sizeNext
+				);
+				graphics.stroke();
+				
+				graphics.moveTo(
+					baseX + piece.yDir * size + piece.xDir * 10, 
+					baseY + piece.yDir * 10 + piece.xDir * size
+				);
+				graphics.lineTo(
+					baseX + piece.yDirLast * sizeNext + -piece.xDirLast * 10, 
+					baseY + -piece.yDirLast * 10 + piece.xDirLast * sizeNext
+				);
+				graphics.stroke();
+				graphics.closePath();
+			} else {
+				graphics.beginPath();
+				graphics.moveTo(
+					baseX + -piece.yDir * size + piece.xDir * 10, 
+					baseY + piece.yDir * 10 + -piece.xDir * size
+				);
+				graphics.lineTo(
+					baseX + piece.yDirLast * sizeNext + -piece.xDirLast * 10, 
+					baseY + -piece.yDirLast * 10 + piece.xDirLast * sizeNext
+				);
+				graphics.stroke();
+				graphics.moveTo(
+					baseX + piece.yDir * size + piece.xDir * 10, 
+					baseY + piece.yDir * 10 + piece.xDir * size
+				);
+				graphics.lineTo(
+					baseX + -piece.yDirLast * sizeNext + -piece.xDirLast * 10, 
+					baseY + -piece.yDirLast * 10 + -piece.xDirLast * sizeNext
+				);
+				graphics.stroke();
+				graphics.closePath();
+			}
 			if (i === 0) {
+				graphics.fillStyle = "green";
 				graphics.arc(baseX, baseY, 6, 0, 2 * Math.PI);
 				graphics.arc(baseX + 1, baseY, 6, 0, 2 * Math.PI);
 				graphics.arc(baseX, baseY + 1, 6, 0, 2 * Math.PI);
 				graphics.arc(baseX + 1, baseY + 1, 6, 0, 2 * Math.PI);
+				graphics.fillStyle = "gray";
+				graphics.lineWidth = 2;
+				graphics.fill();
+				graphics.closePath();
 			}
-			
-			graphics.fill();
-			graphics.closePath();
-			
-			graphics.beginPath();
-			graphics.arc(
-				baseX + -piece.yDir * 5 + piece.xDir * 10, 
-				baseY + piece.yDir * 10 + -piece.xDir * 5, 3, 0, 2 * Math.PI
-			);
-			graphics.arc(
-				baseX + piece.yDir * 5 + piece.xDir * 10, 
-				baseY + piece.yDir * 10 + piece.xDir * 5, 3, 0, 2 * Math.PI
-			);
-			graphics.fill();
-			graphics.closePath();
 		}
 	};
 	var increaseLength = function() {

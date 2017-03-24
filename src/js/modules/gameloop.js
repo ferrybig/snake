@@ -5,7 +5,7 @@ var Gameloop = (function() {
 	
 	var lastFrameTime = undefined;
 	var thisFrameTime = 0;
-	var targetPhysicsRate = 1000 / 60; // Run physics at 60 TPS
+	var targetPhysicsRate = 1000 / 5; // Run physics at 5 TPS
 	var targetFrameRate = 1000 / 60; // Run frames at 60 FPS
 	var paused = false;
 	var canvas = undefined;
@@ -24,13 +24,21 @@ var Gameloop = (function() {
 	
 	var _draw = function() {
 		graphics.clearRect(0,0,800,800);
-		Ai.draw(graphics);
 		Snake.draw(graphics);
 		Food.draw(graphics);
+		Ai.draw(graphics);
 		Board.draw(graphics);
 		Score.draw(graphics);
 		Controller.draw(graphics);
 	};
+	
+	var pause = function() {
+		paused = true;
+	};
+	
+	var setTargetPhysicsRate = function(target) {
+		targetPhysicsRate = target;
+	}
 	
 	var _loop = function() {
 		var timeInMs = Date.now();
@@ -52,6 +60,7 @@ var Gameloop = (function() {
 	var init = function(canvasElm) {
 		canvas = canvasElm;
 		graphics = canvas.getContext('2d');
+		graphics.scale(2,2);
 		Controller.init(canvasElm);
 		_requestAnimFrame(_loop);
 	};
@@ -69,7 +78,9 @@ var Gameloop = (function() {
 			};
 		
 	var self = {
-		init: init
+		init: init,
+		setTargetPhysicsRate: setTargetPhysicsRate,
+		pause: pause
 	};
 	return self;
 })();
