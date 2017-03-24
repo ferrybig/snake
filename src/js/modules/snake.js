@@ -14,7 +14,7 @@ var Snake = (function () {
 	var update = function () {
 		var input = Controller.getArrowDirection({x: x * Board.getScale(), y: y * Board.getScale()});
 		if (!Ai.isEnabled()) {
-			if(input.length > 0) {
+			if (input.length > 0) {
 				self[input[1]]();
 				self[input[0]]();
 			}
@@ -36,7 +36,7 @@ var Snake = (function () {
 		if (snakePieces.length > 0) {
 			snakePieces[0].xDir = xDir;
 			snakePieces[0].yDir = yDir;
-			if(xDir === 0 && yDir === 0) {
+			if (xDir === 0 && yDir === 0) {
 				return;
 			}
 		}
@@ -48,8 +48,8 @@ var Snake = (function () {
 			xDirLast: xDir,
 			yDirLast: yDir
 		});
-		
-		if(Board.getTile(x, y) === 'snake') {
+
+		if (Board.getTile(x, y) === 'snake') {
 			//length = 1;
 			length -= 3;
 			// TODO: die
@@ -71,60 +71,64 @@ var Snake = (function () {
 	var draw = function (graphics) {
 		for (var i = 0; i < snakePieces.length; i++) {
 			var piece = snakePieces[i];
-			if(i === 0) {
+			if (i === 0) {
 				graphics.fillStyle = "#99FF99";
 			} else {
 				graphics.fillStyle = "yellow";
 			}
-			graphics.fillRect(piece.x * Board.getScale(), piece.y * Board.getScale(), Board.getScale(), Board.getScale());
+			graphics.strokeStyle = "black";
+			graphics.lineCap = "round";
+			graphics.lineJoin = "round";
+			//graphics.fillRect(piece.x * Board.getScale(), piece.y * Board.getScale(), Board.getScale(), Board.getScale());
 			var baseX = piece.x * Board.getScale() + Board.getScale() / 2 + 1;
 			var baseY = piece.y * Board.getScale() + Board.getScale() / 2 + 1;
 			var size = Math.sin((i) / 10) / 2 + 4;
-			var sizeNext = Math.sin((i + 1)/ 10) / 2 + 4;
-			if(piece.xDir === piece.xDirLast && piece.yDir === piece.yDirLast) {
-				graphics.beginPath();
+			var sizeNext = Math.sin((i + 1) / 10) / 2 + 4;
+			graphics.beginPath();
+			if (piece.xDir === piece.xDirLast && piece.yDir === piece.yDirLast) {
 				graphics.moveTo(
-					baseX + -piece.yDir * size + piece.xDir * 10, 
-					baseY + piece.yDir * 10 + -piece.xDir * size
-				);
+						baseX + -piece.yDir * size + piece.xDir * 10,
+						baseY + piece.yDir * 10 + -piece.xDir * size
+						);
 				graphics.lineTo(
-					baseX + -piece.yDirLast * sizeNext + -piece.xDirLast * 10, 
-					baseY + -piece.yDirLast * 10 + -piece.xDirLast * sizeNext
-				);
-				graphics.stroke();
-				
-				graphics.moveTo(
-					baseX + piece.yDir * size + piece.xDir * 10, 
-					baseY + piece.yDir * 10 + piece.xDir * size
-				);
+						baseX + -piece.yDirLast * sizeNext + -piece.xDirLast * 10,
+						baseY + -piece.yDirLast * 10 + -piece.xDirLast * sizeNext
+						);
 				graphics.lineTo(
-					baseX + piece.yDirLast * sizeNext + -piece.xDirLast * 10, 
-					baseY + -piece.yDirLast * 10 + piece.xDirLast * sizeNext
-				);
-				graphics.stroke();
-				graphics.closePath();
+						baseX + piece.yDirLast * sizeNext + -piece.xDirLast * 10,
+						baseY + -piece.yDirLast * 10 + piece.xDirLast * sizeNext
+						);
+				graphics.lineTo(
+						baseX + piece.yDir * size + piece.xDir * 10,
+						baseY + piece.yDir * 10 + piece.xDir * size
+						);
 			} else {
-				graphics.beginPath();
 				graphics.moveTo(
-					baseX + -piece.yDir * size + piece.xDir * 10, 
-					baseY + piece.yDir * 10 + -piece.xDir * size
-				);
+						baseX + -piece.yDir * size + piece.xDir * 10,
+						baseY + piece.yDir * 10 + -piece.xDir * size
+						);
+				graphics.quadraticCurveTo(
+						baseX,
+						baseY,
+
+						baseX + piece.yDirLast * sizeNext + -piece.xDirLast * 10,
+						baseY + -piece.yDirLast * 10 + piece.xDirLast * sizeNext
+						);
 				graphics.lineTo(
-					baseX + piece.yDirLast * sizeNext + -piece.xDirLast * 10, 
-					baseY + -piece.yDirLast * 10 + piece.xDirLast * sizeNext
-				);
-				graphics.stroke();
-				graphics.moveTo(
-					baseX + piece.yDir * size + piece.xDir * 10, 
-					baseY + piece.yDir * 10 + piece.xDir * size
-				);
-				graphics.lineTo(
-					baseX + -piece.yDirLast * sizeNext + -piece.xDirLast * 10, 
-					baseY + -piece.yDirLast * 10 + -piece.xDirLast * sizeNext
-				);
-				graphics.stroke();
-				graphics.closePath();
+						baseX + -piece.yDirLast * sizeNext + -piece.xDirLast * 10,
+						baseY + -piece.yDirLast * 10 + -piece.xDirLast * sizeNext
+						);
+				graphics.quadraticCurveTo(
+						baseX,
+						baseY,
+
+						baseX + piece.yDir * size + piece.xDir * 10,
+						baseY + piece.yDir * 10 + piece.xDir * size
+						);
 			}
+			graphics.closePath();
+			graphics.stroke();
+			graphics.fill();
 			if (i === 0) {
 				graphics.fillStyle = "green";
 				graphics.arc(baseX, baseY, 6, 0, 2 * Math.PI);
@@ -138,7 +142,7 @@ var Snake = (function () {
 			}
 		}
 	};
-	var increaseLength = function() {
+	var increaseLength = function () {
 		length++;
 	};
 	var getDirection = function () {
@@ -172,10 +176,10 @@ var Snake = (function () {
 		xDir = 1;
 		yDir = 0;
 	};
-	var getX = function() {
+	var getX = function () {
 		return x;
 	};
-	var getY = function() {
+	var getY = function () {
 		return y;
 	};
 

@@ -6,19 +6,9 @@ var Board = (function () {
 	var scale = 20;
 
 	var draw = function (graphics) {
-		graphics.fillStyle = "black";
-		graphics.beginPath();
-		for (var x = -1; x < sizeX; x++) {
-			graphics.fillRect(x * scale, 0, 2, sizeY * scale);
-		}
-		for (var y = -1; y < sizeY; y++) {
-			graphics.fillRect(0, y * scale, sizeX * scale, 2);
-		}
-		graphics.closePath();
 	};
 
 	var update = function () {
-
 	};
 
 	var initBoard = function () {
