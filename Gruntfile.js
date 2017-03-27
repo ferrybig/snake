@@ -9,7 +9,9 @@ module.exports = function (grunt) {
  
  
     grunt.registerTask('javascript', ['concat_sourcemap:js', 'uglify:js']);
-    grunt.registerTask('styles', ['sass:sass']);
-    grunt.registerTask('build', ['javascript', 'sass']);
-    grunt.registerTask('default', ['build', 'watch']);
+    grunt.registerTask('styles', ['sass:sass', 'cssmin']);
+    grunt.registerTask('build:dev', ['javascript', 'styles', 'replace:dev']);
+    grunt.registerTask('build:prod', ['javascript', 'styles', 'replace:production']);
+    grunt.registerTask('default', ['build:dev', 'browserSync:dev', 'watch']);
+    grunt.registerTask('production', ['build:prod']);
 };

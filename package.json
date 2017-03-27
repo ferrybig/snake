@@ -13,11 +13,14 @@
   "dependencies": {},
   "devDependencies": {
     "grunt": "^1.0.1",
+    "grunt-browser-sync": "^2.2.0",
     "grunt-concat-sourcemap": "^0.4.3",
     "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-cssmin": "^2.0.0",
     "grunt-contrib-sass": "^1.0.0",
     "grunt-contrib-uglify": "^2.2.0",
     "grunt-contrib-watch": "^1.0.0",
+    "grunt-replace": "^1.0.1",
     "load-grunt-config": "^0.19.2",
     "load-grunt-configs": "^1.0.0",
     "load-grunt-tasks": "^3.5.2"
