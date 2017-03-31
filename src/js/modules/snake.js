@@ -142,6 +142,9 @@ var Snake = (function () {
 			}
 		}
 	};
+	var getLength = function() {
+		return length;
+	}
 	var increaseLength = function () {
 		length++;
 	};
@@ -197,7 +200,8 @@ var Snake = (function () {
 		increaseLength: increaseLength,
 		getX: getX,
 		getY: getY,
-		isMaxLength: isMaxLength
+		isMaxLength: isMaxLength,
+		getLength: getLength
 	};
 	return self;
 })();
