@@ -145,6 +145,9 @@ var Snake = (function () {
 	var increaseLength = function () {
 		length++;
 	};
+	var isMaxLength = function() {
+		return length >= Math.pow(Board.getSize(), 2) + 1;
+	};
 	var getDirection = function () {
 		return {
 			x: xDir,
@@ -193,7 +196,8 @@ var Snake = (function () {
 		getDirection: getDirection,
 		increaseLength: increaseLength,
 		getX: getX,
-		getY: getY
+		getY: getY,
+		isMaxLength: isMaxLength
 	};
 	return self;
 })();

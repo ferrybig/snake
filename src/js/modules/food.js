@@ -1,4 +1,4 @@
-/* global Board, Snake */
+/* global Board, Snake, Gameloop */
 
 'use strict';
 var Food = (function(){
@@ -16,6 +16,10 @@ var Food = (function(){
 			x = undefined;
 		}
 		if(x === undefined) {
+			if(Snake.isMaxLength()) {
+				Gameloop.pause();
+				return;
+			}
 			var random = Board.selectRandomTile();
 			x = random.x;
 			y = random.y;
