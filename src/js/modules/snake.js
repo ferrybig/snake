@@ -53,8 +53,8 @@ var Snake = (function () {
 			//length = 1;
 			length -= 3;
 			// TODO: die
-			//Gameloop.pause();
-			//return;
+			Gameloop.pause();
+			return;
 		}
 		Board.setTile(x, y, 'snake');
 		xDirLast = xDir;
