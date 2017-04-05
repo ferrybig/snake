@@ -39,14 +39,14 @@ The basic steps prevent the ai from ever getting into a situation where it will 
 
 The grid created by these operations look like:
 
-    ↗️↘️↗️↘️↗️↘️↗️↘️↗️↘️
-    ↙️↙️↖️↙️↖️↙️↖️↙️↖️↙️
-    ↘️↘️↗️↘️↗️↘️↗️↘️↗️↘️
-    ↙️↙️↖️↙️↖️↙️↖️↙️↖️↙️
-    ↘️↘️↗️↘️↗️↘️↗️↘️↗️↘️
-    ↙️↙️↖️↙️↖️↙️↖️↙️↖️↙️
-    ↘️↘️↗️↘️↗️↘️↗️↘️↗️↘️
-    ↙️↙️↖️↙️↖️↙️↖️↙️↖️↙️ 
+    ↗️↘️↗️↘️↗️↘️↗️↘️
+    ↖️↙️↖️↙️↖️↙️↖️↙️
+    ↗️↘️↗️↘️↗️↘️↗️↘️
+    ↖️↙️↖️↙️↖️↙️↖️↙️
+    ↗️↘️↗️↘️↗️↘️↗️↘️
+    ↖️↙️↖️↙️↖️↙️↖️↙️
+    ↗️↘️↗️↘️↗️↘️↗️↘️
+    ↖️↙️↖️↙️↖️↙️↖️↙️ 
     
 To prevent the ai from making circles around the food in case the food in near a wall, the position of the food will be
 shifted a little off center, and is clipped at the sides of the playing field, this makes sure the food can always be picked up.
