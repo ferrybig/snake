@@ -23,7 +23,7 @@ var Gameloop = (function() {
 	};
 	
 	var _draw = function() {
-		graphics.clearRect(0,0,800,800);
+		//graphics.clearRect(0,0,800,800);
 		Snake.draw(graphics);
 		Food.draw(graphics);
 		Ai.draw(graphics);

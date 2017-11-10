@@ -10,6 +10,8 @@ var Snake = (function () {
 	var yDir = 0;
 	var xDirLast = 0;
 	var yDirLast = 0;
+	var tilesToErase = [];
+	var newTiles = 0;
 
 	var update = function () {
 		var input = Controller.getArrowDirection({x: x * Board.getScale(), y: y * Board.getScale()});
@@ -22,10 +24,10 @@ var Snake = (function () {
 		x += xDir;
 		y += yDir;
 		if (x < 0) {
-			x = 19;
+			x = Board.getSize() - 1;
 		}
 		if (y < 0) {
-			y = 19;
+			y = Board.getSize() - 1;
 		}
 		if (x > Board.getSize()) {
 			x = 0;
@@ -48,7 +50,6 @@ var Snake = (function () {
 			xDirLast: xDir,
 			yDirLast: yDir
 		});
-
 		if (Board.getTile(x, y) === 'snake') {
 			//length = 1;
 			length -= 3;
@@ -57,11 +58,13 @@ var Snake = (function () {
 			return;
 		}
 		Board.setTile(x, y, 'snake');
+		newTiles+= 2;
 		xDirLast = xDir;
 		yDirLast = yDir;
 		while (snakePieces.length > length) {
 			var piece = snakePieces.pop();
 			Board.setTile(piece.x, piece.y, 'empty');
+			tilesToErase.push(piece);
 		}
 		var piece = snakePieces.pop();
 		piece.xDirLast = 0;
@@ -69,8 +72,22 @@ var Snake = (function () {
 		snakePieces.push(piece);
 	};
 	var draw = function (graphics) {
+		graphics.fillStyle = "#FFFFFF";
+		for (var j = 0; j < tilesToErase.length; j++) {
+			var piece = tilesToErase[j];
+			graphics.fillRect(piece.x * Board.getScale(), piece.y * Board.getScale(), Board.getScale(), Board.getScale());
+		}
+		newTiles = Math.max(2, newTiles);
+		tilesToErase = [];
+		var snakePiecesMinusOne = snakePieces.length - 1;
+		graphics.lineWidth = 0;
 		for (var i = 0; i < snakePieces.length; i++) {
 			var piece = snakePieces[i];
+			if(i > newTiles && i !== snakePiecesMinusOne && (piece.y !== 0 || piece.x > 5)) {
+				continue;
+			}
+			graphics.fillStyle = "#FFFFFF";
+			graphics.fillRect(piece.x * Board.getScale(), piece.y * Board.getScale(), Board.getScale(), Board.getScale());
 			if (i === 0) {
 				graphics.fillStyle = "#99FF99";
 			} else {
@@ -79,11 +96,10 @@ var Snake = (function () {
 			graphics.strokeStyle = "black";
 			graphics.lineCap = "round";
 			graphics.lineJoin = "round";
-			//graphics.fillRect(piece.x * Board.getScale(), piece.y * Board.getScale(), Board.getScale(), Board.getScale());
 			var baseX = piece.x * Board.getScale() + Board.getScale() / 2 + 1;
 			var baseY = piece.y * Board.getScale() + Board.getScale() / 2 + 1;
-			var size = (Math.sin((i) / 10) / 2 + 4) / (20 / Board.getScale());
-			var sizeNext = (Math.sin((i + 1) / 10) / 2 + 4) / (20 / Board.getScale());
+			var size = 3 / (10 / Board.getScale());
+			var sizeNext = 3 / (10 / Board.getScale());
 			graphics.beginPath();
 			var renderSize = Board.getScale() / 2;
 			if (piece.xDir === piece.xDirLast && piece.yDir === piece.yDirLast) {
@@ -131,22 +147,22 @@ var Snake = (function () {
 			graphics.stroke();
 			graphics.fill();
 			if (i === 0) {
-				graphics.fillStyle = "green";
-				graphics.arc(baseX, baseY, renderSize/1.5, 0, 2 * Math.PI);
-				graphics.arc(baseX + 1, baseY, renderSize/1.5, 0, 2 * Math.PI);
-				graphics.arc(baseX, baseY + 1, renderSize/1.5, 0, 2 * Math.PI);
-				graphics.arc(baseX + 1, baseY + 1, renderSize/1.5, 0, 2 * Math.PI);
 				graphics.fillStyle = "gray";
-				graphics.lineWidth = 2;
+				graphics.arc(baseX, baseY, renderSize/3, 0, 2 * Math.PI);
+				graphics.fillStyle = "gray";
 				graphics.fill();
 				graphics.closePath();
 			}
 		}
+		newTiles = 0;
 	};
 	var getLength = function() {
 		return length;
 	}
 	var increaseLength = function () {
+		if(length === 6380) {
+			Gameloop.setTargetPhysicsRate(1000/8);
+		}
 		length++;
 	};
 	var isMaxLength = function() {
