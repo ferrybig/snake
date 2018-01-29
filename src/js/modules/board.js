@@ -1,9 +1,13 @@
 'use strict';
 var Board = (function () {
 	var grid = [];
-	var sizeX = 20;
-	var sizeY = 20;
-	var scale = 20;
+//	var sizeX = 20;
+//	var sizeY = 20;
+//	var scale = 20;
+	var sizeX = 100;
+	var sizeY = 100;
+	var scale = 4;
+
 
 	var draw = function (graphics) {
 	};

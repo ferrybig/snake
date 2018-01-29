@@ -81,6 +81,8 @@ var Snake = (function () {
 		tilesToErase = [];
 		var snakePiecesMinusOne = snakePieces.length - 1;
 		graphics.lineWidth = 0;
+		var renderSize = Board.getScale() / 2;
+		graphics.lineWidth = renderSize/ 10;
 		for (var i = 0; i < snakePieces.length; i++) {
 			var piece = snakePieces[i];
 			if(i > newTiles && i !== snakePiecesMinusOne && (piece.y !== 0 || piece.x > 5)) {
@@ -96,12 +98,11 @@ var Snake = (function () {
 			graphics.strokeStyle = "black";
 			graphics.lineCap = "round";
 			graphics.lineJoin = "round";
-			var baseX = piece.x * Board.getScale() + Board.getScale() / 2 + 1;
-			var baseY = piece.y * Board.getScale() + Board.getScale() / 2 + 1;
-			var size = 3 / (10 / Board.getScale());
-			var sizeNext = 3 / (10 / Board.getScale());
+			var baseX = piece.x * Board.getScale() + Board.getScale() / 2;
+			var baseY = piece.y * Board.getScale() + Board.getScale() / 2;
+			var size = 3 / (20.0 / Board.getScale());
+			var sizeNext = 3 / (20.0 / Board.getScale());
 			graphics.beginPath();
-			var renderSize = Board.getScale() / 2;
 			if (piece.xDir === piece.xDirLast && piece.yDir === piece.yDirLast) {
 				graphics.moveTo(
 						baseX + -piece.yDir * size + piece.xDir * renderSize,
@@ -148,7 +149,7 @@ var Snake = (function () {
 			graphics.fill();
 			if (i === 0) {
 				graphics.fillStyle = "gray";
-				graphics.arc(baseX, baseY, renderSize/3, 0, 2 * Math.PI);
+				graphics.arc(baseX, baseY, renderSize/2.2, 0, 2 * Math.PI);
 				graphics.fillStyle = "gray";
 				graphics.fill();
 				graphics.closePath();
