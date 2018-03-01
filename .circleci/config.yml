@@ -1,0 +1,58 @@
+# This configuration was automatically generated from a CircleCI 1.0 config.
+# It should include any build commands you had along with commands that CircleCI
+# inferred from your project structure. We strongly recommend you read all the
+# comments in this file to understand the structure of CircleCI 2.0, as the idiom
+# for configuration has changed substantially in 2.0 to allow arbitrary jobs rather
+# than the prescribed lifecycle of 1.0. In general, we recommend using this generated
+# configuration as a reference rather than using it in production, though in most
+# cases it should duplicate the execution of your original 1.0 config.
+version: 2
+jobs:
+  build:
+    working_directory: ~/ferrybig/snake
+    parallelism: 1
+    shell: /bin/bash --login
+    docker:
+    - image: circleci/node:9-stretch
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        # This branch if available
+        - v1-dep-{{ .Branch }}-
+        # Default branch if not
+        - v1-dep-master-
+        # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
+        - v1-dep-
+    # The following line was run implicitly in your 1.0 builds based on what CircleCI inferred about the structure of your project. In 2.0 you need to be explicit about which commands should be run. In some cases you can discard inferred commands if they are not relevant to your project.
+    - run: if [ -z "${NODE_ENV:-}" ]; then export NODE_ENV=test; fi
+    - run: export PATH="~/ferrybig/snake/node_modules/.bin:$PATH"
+    - run: npm install
+    # Save dependency cache
+    - save_cache:
+        key: v1-dep-{{ .Branch }}-{{ epoch }}
+        paths:
+        - ./node_modules
+    # Test
+    #   This would typically be a build job when using workflows, possibly combined with build
+    # This is based on your 1.0 configuration file or project settings
+    - run: grunt production
+    # Deployment
+    # Your existing circle.yml file contains deployment steps.
+    # The config translation tool does not support translating deployment steps
+    # since deployment in CircleCI 2.0 are better handled through workflows.
+    # See the documentation for more information https://circleci.com/docs/2.0/workflows/
+  deploy:
+    steps:
+    - run: rsync -avz --rsync-path="$CIRCLE_PROJECT_REPONAME rsync" --delete public/ "$DEPLOY_SERVER_DIR"
+workflows:
+  version: 2
+  build-n-deploy:
+    jobs:
+      - build:
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: /master/
